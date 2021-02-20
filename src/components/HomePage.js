@@ -1,16 +1,32 @@
-import React, {Component} from "react";
-import {Col, Container, Row} from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Col, Container, Form, FormControl, Row } from "react-bootstrap";
+import { withRouter } from 'react-router-dom';
 
-export default class HomePage extends Component {
-    render() {
-        return (
-            <Container fluid className="px-4">
+const HomePage = (props) => {
+
+    const handleSubmit = (e) =>  {
+        e.preventDefault();
+
+        props.history.push(`/search/${searchText}`);
+    }
+
+    const [ searchText, setSearchText] = useState("");
+
+    return (
+        <Container fluid className="px-4">
+            <Form onSubmit={handleSubmit}>
                 <Row className="mt-2">
+                    <Col md={{ span: 4, offset: 4}}>
+                        <FormControl type="text" placeholder="Search for books"
+                            onChange={e => setSearchText(e.target.value)} value={searchText} />
+                    </Col>
                     <Col>
-                        <h3 className="header-text text-center">Search for Books</h3>
+                        <Button type="submit" variant="outline-success">Search</Button>
                     </Col>
                 </Row>
-            </Container>
-        );
-    }
+            </Form>
+        </Container>
+    );
 }
+
+export default withRouter(HomePage);
