@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import { withRouter } from 'react-router-dom';
-import  bookImage from '../default-book.jpg';
+import BookList from '../ui/BookList';
 import SpinnerButton from '../common/SpinnerButton';
 import Pagination from 'react-js-pagination';
 import '../App.css';
@@ -48,26 +48,8 @@ const SearchPage = (props) => {
                 {   isLoading
                     ? <SpinnerButton />
                     : responseData.length === 0
-                        ? <h2> No Result Found</h2>
-                        : currentData.map( row => {
-                            const key = row.key.replace('/works/', '');
-                            const coverImage = row.cover_i !== undefined
-                                ? `http://covers.openlibrary.org/b/ID/${row.cover_i}-M.jpg`
-                                : bookImage ;
-
-                            return (
-                                <Card key={row.key} style={{width: '18rem'}} className="mx-2 my-1">
-                                <Card.Img variant="top" src={coverImage} style={{ height: '300px' }}  />
-                                <Card.Body>
-                                    <Card.Title>{row.title}</Card.Title>
-                                    <Button variant="primary" onClick={() => props.history.push({
-                                        pathname: `/books/${key}`, state: row
-                                    })}>
-                                        View Book
-                                    </Button>
-                                </Card.Body>
-                            </Card>)
-                    })
+                         ? <h2> No Result Found</h2>
+                         : <BookList data={currentData} props={props} />
                 }
             </Row>
             {
