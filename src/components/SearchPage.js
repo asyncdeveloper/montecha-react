@@ -49,17 +49,22 @@ const SearchPage = (props) => {
                     ? <SpinnerButton />
                     : responseData.length === 0
                         ? <h2> No Result Found</h2>
-                        : currentData.map((row, index) => {
+                        : currentData.map( row => {
+                            const key = row.key.replace('/works/', '');
                             const coverImage = row.cover_i !== undefined
                                 ? `http://covers.openlibrary.org/b/ID/${row.cover_i}-M.jpg`
                                 : bookImage ;
 
                             return (
-                                <Card key={index} style={{width: '18rem'}} className="mx-2 my-1">
+                                <Card key={row.key} style={{width: '18rem'}} className="mx-2 my-1">
                                 <Card.Img variant="top" src={coverImage} style={{ height: '300px' }}  />
                                 <Card.Body>
                                     <Card.Title>{row.title}</Card.Title>
-                                    <Button variant="primary">View Book</Button>
+                                    <Button variant="primary" onClick={() => props.history.push({
+                                        pathname: `/books/${key}`, state: row
+                                    })}>
+                                        View Book
+                                    </Button>
                                 </Card.Body>
                             </Card>)
                     })
@@ -73,7 +78,7 @@ const SearchPage = (props) => {
                                 activePage={ activePage }
                                 itemsCountPerPage={ dataPerPage }
                                 totalItemsCount={ responseData.length }
-                                pageRangeDisplayed={ dataPerPage }
+                                pageRangeDisplayed={5}
                                 onChange={ handlePageChange }
                             />
                         </div>
